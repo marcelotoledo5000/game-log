@@ -2,6 +2,22 @@
 
 This is a program written in Go to analyze game logs and generate a report with statistics for each game.
 
+A simple log parser for game logs extracts player information, kills, and kill types from the log and generates a report.
+
+## Table of Contents
+
+- [Game Log Parser](#game-log-parser)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [System requirements](#system-requirements)
+  - [How to use](#how-to-use)
+  - [Sample log](#sample-log)
+  - [Sample report](#sample-report)
+
+## Introduction
+
+The Game Log Parser is a tool that reads a game log file and extracts relevant information such as player details, kills, and kill types. It then generates a report summarizing the data for each game played.
+
 ## System requirements
 
 - Go (version 1.20.6 or higher)
@@ -16,13 +32,25 @@ git clone https://github.com/marcelotoledo5000/game-log.git
 cd game-log
 ```
 
-3. Run the program, providing the path of the log file as an argument:
+3. Build the project:
+
+```bash
+go build
+```
+
+4. Run the program, providing the path of the log file as an argument:
 
 ```bash
 go run main.go path/to/file.log
 ```
 
 For example:
+
+```bash
+./game-log log/temp.log
+```
+
+or
 
 ```bash
 go run main.go log/temp.log
