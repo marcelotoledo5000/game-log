@@ -274,8 +274,13 @@ func sortPlayerRanking(playerRanking map[string]int) []string {
 }
 
 func main() {
-	// TODO: Need improvements to turn it flexible
-	logFilePath := "log/qgames.log"
+	var logFilePath string
+
+	if len(os.Args) > 1 {
+		logFilePath = os.Args[1]
+	} else {
+		logFilePath = "log/qgames.log"
+	}
 
 	gameParser := NewGameParser()
 	err := gameParser.ParseLog(logFilePath)
