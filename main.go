@@ -95,7 +95,11 @@ func (gp *GameParser) ParseLog(filePath string) error {
 			player.Name = name
 
 		case strings.Contains(line, "Kill"):
-			currentGame, _ := gp.currentGame()
+			currentGame, err := gp.currentGame()
+			if err != nil {
+				return err
+			}
+
 			killer, victim, method := extractKillData(line)
 
 			currentGame.TotalKills++
