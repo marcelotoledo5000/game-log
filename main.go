@@ -67,7 +67,7 @@ func (gp *GameParser) ParseLog(filePath string) error {
 				return err
 			}
 
-			id, err := extractID(line)
+			id, err := extractPlayerID(line)
 			if err != nil {
 				return err
 			}
@@ -75,7 +75,7 @@ func (gp *GameParser) ParseLog(filePath string) error {
 			findOrCreatePlayer(currentGame, id)
 
 		case strings.Contains(line, "ClientUserinfoChanged"):
-			id, err := extractID(line)
+			id, err := extractPlayerID(line)
 			if err != nil {
 				return err
 			}
@@ -151,7 +151,7 @@ func findOrCreatePlayer(game *Game, id string) *Player {
 	return player
 }
 
-func extractID(input string) (string, error) {
+func extractPlayerID(input string) (string, error) {
 	regex := regexp.MustCompile(`ClientConnect:\s+(\d+)|ClientUserinfoChanged:\s+(\d+)`)
 	match := regex.FindStringSubmatch(input)
 
