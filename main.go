@@ -33,11 +33,6 @@ func NewGameParser() *GameParser {
 	}
 }
 
-// Ver se vale a pena utilizar
-func (game *Game) AddPlayer(player *Player) {
-	game.Players = append(game.Players, player)
-}
-
 func (gp *GameParser) currentGame() (*Game, error) {
 	current := gp.games[len(gp.games)-1]
 	if current != nil {
