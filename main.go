@@ -69,12 +69,12 @@ func (gp *GameParser) ParseLog(filePath string) error {
 		case strings.Contains(line, "ClientConnect"):
 			currentGame, err := gp.currentGame()
 			if err != nil {
-				panic("Error")
+				return err
 			}
 
 			id, err := extractID(line)
 			if err != nil {
-				continue
+				return err
 			}
 
 			findOrCreatePlayer(currentGame, id)
@@ -82,7 +82,7 @@ func (gp *GameParser) ParseLog(filePath string) error {
 		case strings.Contains(line, "ClientUserinfoChanged"):
 			id, err := extractID(line)
 			if err != nil {
-				continue
+				return err
 			}
 
 			name := extractPlayerName(line)
@@ -128,8 +128,12 @@ func (gp *GameParser) ParseLog(filePath string) error {
 			}
 
 		case strings.Contains(line, "ShutdownGame"):
+			game, err := gp.currentGame()
+			if err != nil {
+				return err
+			}
+
 			// Remove players without names from the list
-			game, _ := gp.currentGame()
 			updatedPlayers := make([]*Player, 0)
 			for _, player := range game.Players {
 				if player.Name != "" {
@@ -137,8 +141,6 @@ func (gp *GameParser) ParseLog(filePath string) error {
 				}
 			}
 			game.Players = updatedPlayers
-			// default:
-			// 	fmt.Println("line does not contain any expected values.")
 		}
 	}
 
