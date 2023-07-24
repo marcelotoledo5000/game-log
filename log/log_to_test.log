@@ -1,0 +1,14 @@
+0:00 ------------------------------------------------------------
+0:00 InitGame: \sv_floodProtect\1\sv_maxPing\0\sv_minPing\0\sv_maxRate\10000\sv_minRate\0\sv_hostname\Code Miner Server\
+15:00 Exit: Timelimit hit.
+20:34 ClientConnect: 2
+20:34 ClientUserinfoChanged: 2 n\Isgalamido\t\0\model\xian/default\hmodel\xian/default\g_redteam\\g_blueteam\
+20:37 ClientUserinfoChanged: 2 n\Isgalamido\t\0\model\uriel/zael\hmodel\uriel/zael\g_redteam\\g_blueteam\
+20:37 ClientBegin: 2
+20:37 ClientConnect: 3
+20:34 ClientUserinfoChanged: 3 n\Dono da Bola\t\0\model\sarge/krusade\hmodel\sarge/krusade\g_redteam\\g_blueteam\
+20:34 ClientUserinfoChanged: 3 n\Mocinha\t\0\model\sarge\hmodel\sarge\g_redteam\\g_blueteam\
+20:36 Kill: 1022 2 22: <world> killed Isgalamido by MOD_TRIGGER_HURT
+20:37 Kill: 2 3 7: Isgalamido killed Mocinha by MOD_ROCKET_SPLASH
+20:38 Kill: 2 3 7: Isgalamido killed Mocinha by MOD_ROCKET_SPLASH
+20:45 ShutdownGame:
