@@ -190,15 +190,6 @@ func extractKillData(line string) (string, string, string) {
 	return "", "", ""
 }
 
-func contains(slice []string, item string) bool {
-	for _, s := range slice {
-		if s == item {
-			return true
-		}
-	}
-	return false
-}
-
 func generateReport(gp *GameParser) {
 	for i, game := range gp.games {
 		fmt.Printf("\"game_%d\": {\n", i+1)
