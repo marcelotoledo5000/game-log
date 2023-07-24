@@ -86,27 +86,13 @@ func (gp *GameParser) ParseLog(filePath string) error {
 			}
 
 			name := extractPlayerName(line)
-			game, _ := gp.currentGame()
-
-			// ver uma opção para usar a func findOrCreatePlayer aqui
-			found := false
-			for _, player := range game.Players {
-				if player.Id == id {
-					newPlayer := *player
-					newPlayer.Name = name
-					*player = newPlayer
-					found = true
-					break
-				}
+			currentGame, err := gp.currentGame()
+			if err != nil {
+				return err
 			}
 
-			if !found {
-				player := &Player{
-					Id:   id,
-					Name: name,
-				}
-				game.Players = append(game.Players, player)
-			}
+			player := findOrCreatePlayer(currentGame, id)
+			player.Name = name
 
 		case strings.Contains(line, "Kill"):
 			currentGame, _ := gp.currentGame()
