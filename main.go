@@ -209,17 +209,24 @@ func contains(slice []string, item string) bool {
 
 func generateReport(gp *GameParser) {
 	for i, game := range gp.games {
-		fmt.Printf("Game_%d:\n", i+1)
-		fmt.Printf("  Total Kills: %d\n", game.TotalKills)
-		fmt.Println("  Players:")
-		for _, player := range game.Players {
-			fmt.Printf("    %s\n", player.Name)
-		}
-		fmt.Println("  Kills:")
+		fmt.Printf("\"game_%d\": {\n", i+1)
+		fmt.Printf("  \"total_kills\": %d,\n", game.TotalKills)
+		fmt.Printf("  \"players\": %s,\n", getPlayerListJSON(game.Players))
+		fmt.Println("  \"kills\": {")
 		for player, kills := range game.Kills {
-			fmt.Printf("    %s: %d\n", player, kills)
+			fmt.Printf("    \"%s\": %d,\n", player, kills)
 		}
-		fmt.Println()
+		fmt.Println("  },")
+		fmt.Println("  \"kills_by_means\": {")
+		for mean, count := range game.KillsByMeans {
+			fmt.Printf("    \"%s\": %d,\n", mean, count)
+		}
+		fmt.Println("  }")
+		if i == len(gp.games)-1 {
+			fmt.Println("}")
+		} else {
+			fmt.Println("},")
+		}
 	}
 
 	fmt.Println("Player Ranking:")
@@ -237,6 +244,14 @@ func generateReport(gp *GameParser) {
 	for i, player := range sortedRanking {
 		fmt.Printf("%d. %s: %d kills\n", i+1, player, playerRanking[player])
 	}
+}
+
+func getPlayerListJSON(players []*Player) string {
+	var names []string
+	for _, player := range players {
+		names = append(names, fmt.Sprintf("\"%s\"", player.Name))
+	}
+	return "[" + strings.Join(names, ", ") + "]"
 }
 
 func sortPlayerRanking(playerRanking map[string]int) []string {
@@ -260,7 +275,7 @@ func sortPlayerRanking(playerRanking map[string]int) []string {
 
 func main() {
 	// TODO: Need improvements to turn it flexible
-	logFilePath := "log/temp.log"
+	logFilePath := "log/qgames.log"
 
 	gameParser := NewGameParser()
 	err := gameParser.ParseLog(logFilePath)
