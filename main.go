@@ -17,13 +17,20 @@ func main() {
 	} else {
 		logFilePath = "log/qgames.log"
 	}
+	err := run(logFilePath)
+	if err != nil {
+		log.Fatalf("Error running program: %s", err)
+	}
+}
 
+func run(logFilePath string) error {
 	gameParser := game.NewGameParser()
 	logParser := &parser.LogParser{GameParser: gameParser}
 	err := logParser.ParseLog(logFilePath)
 	if err != nil {
-		log.Fatalf("Error parsing log file: %s", err)
+		return err
 	}
 
 	report.GenerateReport(gameParser)
+	return nil
 }
