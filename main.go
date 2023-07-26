@@ -10,112 +10,6 @@ import (
 	"strings"
 )
 
-func (gp *GameParser) ParseLog(filePath string) error {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		switch {
-		case strings.Contains(line, "InitGame"):
-			currentGame := &Game{
-				Kills:        make(map[string]int),
-				KillsByMeans: make(map[string]int),
-			}
-			gp.games = append(gp.games, currentGame)
-
-		case strings.Contains(line, "ClientConnect"):
-			currentGame, err := gp.currentGame()
-			if err != nil {
-				return err
-			}
-
-			id, err := extractPlayerID(line)
-			if err != nil {
-				return err
-			}
-
-			findOrCreatePlayer(currentGame, id)
-
-		case strings.Contains(line, "ClientUserinfoChanged"):
-			id, err := extractPlayerID(line)
-			if err != nil {
-				return err
-			}
-
-			name := extractPlayerName(line)
-			currentGame, err := gp.currentGame()
-			if err != nil {
-				return err
-			}
-
-			player := findOrCreatePlayer(currentGame, id)
-			player.Name = name
-
-		case strings.Contains(line, "Kill"):
-			currentGame, err := gp.currentGame()
-			if err != nil {
-				return err
-			}
-
-			killer, victim, method := extractKillData(line)
-
-			currentGame.TotalKills++
-			currentGame.KillsByMeans[method]++
-
-			if killer == "<world>" {
-				if _, ok := currentGame.Kills[victim]; ok {
-					currentGame.Kills[victim]--
-				} else {
-					currentGame.Kills[victim] = -1
-				}
-			} else {
-				if killer != victim {
-					currentGame.Kills[killer]++
-				}
-			}
-
-		case strings.Contains(line, "ShutdownGame"):
-			game, err := gp.currentGame()
-			if err != nil {
-				return err
-			}
-
-			// Remove players without names from the list
-			updatedPlayers := make([]*Player, 0)
-			for _, player := range game.Players {
-				if player.Name != "" {
-					updatedPlayers = append(updatedPlayers, player)
-				}
-			}
-			game.Players = updatedPlayers
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func extractKillData(line string) (string, string, string) {
-	regex := regexp.MustCompile(`Kill: \d+ \d+ \d+: (.*?) killed (.*?) by\s(.+)`)
-	match := regex.FindStringSubmatch(line)
-
-	if len(match) > 2 {
-		// 1: killer, 2: victim, 3: method
-		return match[1], match[2], match[3]
-	}
-
-	return "", "", ""
-}
 
 func generateReport(gp *GameParser) {
 	for i, game := range gp.games {
@@ -183,6 +77,7 @@ func sortPlayerRanking(playerRanking map[string]int) []string {
 	return sortedRanking
 }
 	"github.com/marcelotoledo5000/game-log/pkg/game"
+	"github.com/marcelotoledo5000/game-log/pkg/parser"
 
 func main() {
 	var logFilePath string
@@ -193,8 +88,9 @@ func main() {
 		logFilePath = "log/qgames.log"
 	}
 
-	gameParser := NewGameParser()
-	err := gameParser.ParseLog(logFilePath)
+	gameParser := game.NewGameParser()
+	logParser := &parser.LogParser{GameParser: gameParser}
+	err := logParser.ParseLog(logFilePath)
 	if err != nil {
 		log.Fatalf("Error parsing log file: %s", err)
 	}
