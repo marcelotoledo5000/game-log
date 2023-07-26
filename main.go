@@ -10,12 +10,6 @@ import (
 	"strings"
 )
 
-type Player struct {
-	Id    string
-	Name  string
-	Score int
-}
-
 func (gp *GameParser) ParseLog(filePath string) error {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -109,28 +103,6 @@ func (gp *GameParser) ParseLog(filePath string) error {
 	}
 
 	return nil
-}
-
-func extractPlayerID(input string) (string, error) {
-	regex := regexp.MustCompile(`ClientConnect:\s+(\d+)|ClientUserinfoChanged:\s+(\d+)`)
-	match := regex.FindStringSubmatch(input)
-
-	if len(match) < 2 {
-		return "", fmt.Errorf("ID not found in the string")
-	}
-
-	return match[len(match)-1], nil
-}
-
-func extractPlayerName(line string) string {
-	regex := regexp.MustCompile(`n\\(.*?)\\`)
-	match := regex.FindStringSubmatch(line)
-
-	if len(match) > 1 {
-		return match[len(match)-1]
-	}
-
-	return ""
 }
 
 func extractKillData(line string) (string, string, string) {
