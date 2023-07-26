@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/marcelotoledo5000/game-log/pkg/player"
 )
@@ -48,4 +49,33 @@ func FindOrCreatePlayer(game *Game, id string) *player.Player {
 	game.Players = append(game.Players, player)
 
 	return player
+}
+
+func (g *Game) PlayersSortedByID() []*player.Player {
+	players := make([]*player.Player, len(g.Players))
+	copy(players, g.Players)
+	sort.Slice(players, func(i, j int) bool {
+		return players[i].Id < players[j].Id
+	})
+	return players
+}
+
+func (g *Game) PlayersSortedByScore() []*player.Player {
+	players := make([]*player.Player, len(g.Players))
+	copy(players, g.Players)
+	sort.Slice(players, func(i, j int) bool {
+		return g.Kills[players[i].Name] > g.Kills[players[j].Name]
+	})
+	return players
+}
+
+func (g *Game) KillsByMeansSortedByKills() []string {
+	means := make([]string, 0, len(g.KillsByMeans))
+	for mean := range g.KillsByMeans {
+		means = append(means, mean)
+	}
+	sort.Slice(means, func(i, j int) bool {
+		return g.KillsByMeans[means[i]] > g.KillsByMeans[means[j]]
+	})
+	return means
 }

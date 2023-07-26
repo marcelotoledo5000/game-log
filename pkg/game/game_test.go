@@ -73,3 +73,66 @@ func TestFindOrCreatePlayer(t *testing.T) {
 		}
 	})
 }
+
+func TestPlayersSortedByID(t *testing.T) {
+	game := &Game{
+		Players: []*player.Player{
+			{Id: "2", Name: "Player2"},
+			{Id: "1", Name: "Player1"},
+			{Id: "3", Name: "Player3"},
+		},
+	}
+
+	players := game.PlayersSortedByID()
+
+	expectedOrder := []string{"Player1", "Player2", "Player3"}
+	for i, player := range players {
+		if player.Name != expectedOrder[i] {
+			t.Errorf("Expected player %s at index %d, got: %s", expectedOrder[i], i, player.Name)
+		}
+	}
+}
+
+func TestPlayersSortedByScore(t *testing.T) {
+	game := &Game{
+		Players: []*player.Player{
+			{Id: "1", Name: "Player1"},
+			{Id: "2", Name: "Player2"},
+			{Id: "3", Name: "Player3"},
+		},
+		Kills: map[string]int{
+			"Player1": 5,
+			"Player2": 10,
+			"Player3": 2,
+		},
+	}
+
+	players := game.PlayersSortedByScore()
+
+	expectedOrder := []string{"Player2", "Player1", "Player3"}
+	for i, player := range players {
+		if player.Name != expectedOrder[i] {
+			t.Errorf("Expected player %s at index %d, got: %s", expectedOrder[i], i, player.Name)
+		}
+	}
+}
+
+func TestKillsByMeansSortedByKills(t *testing.T) {
+	game := &Game{
+		KillsByMeans: map[string]int{
+			"MOD_UNKNOWN":    5,
+			"MOD_SHOTGUN":    10,
+			"MOD_RAILGUN":    2,
+			"MOD_MACHINEGUN": 15,
+		},
+	}
+
+	means := game.KillsByMeansSortedByKills()
+
+	expectedOrder := []string{"MOD_MACHINEGUN", "MOD_SHOTGUN", "MOD_UNKNOWN", "MOD_RAILGUN"}
+	for i, mean := range means {
+		if mean != expectedOrder[i] {
+			t.Errorf("Expected mean %s at index %d, got: %s", expectedOrder[i], i, mean)
+		}
+	}
+}
