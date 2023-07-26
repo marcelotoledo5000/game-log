@@ -14,14 +14,18 @@ func GenerateReport(gp game.GameParserInterface) {
 	for i, game := range gameParser.Games {
 		fmt.Printf("\"game_%d\": {\n", i+1)
 		fmt.Printf("  \"total_kills\": %d,\n", game.TotalKills)
-		fmt.Printf("  \"players\": %s,\n", getPlayerListJSON(game.Players))
+		fmt.Printf("  \"players\": %s,\n", getPlayerListJSON(game.PlayersSortedByID()))
 		fmt.Println("  \"kills\": {")
-		for player, kills := range game.Kills {
-			fmt.Printf("    \"%s\": %d,\n", player, kills)
+		for _, player := range game.PlayersSortedByScore() {
+			kills := game.Kills[player.Name]
+			if kills != 0 { // Sorted by kills and non-zero.
+				fmt.Printf("    \"%s\": %d,\n", player.Name, kills)
+			}
 		}
 		fmt.Println("  },")
 		fmt.Println("  \"kills_by_means\": {")
-		for mean, count := range game.KillsByMeans {
+		for _, mean := range game.KillsByMeansSortedByKills() {
+			count := game.KillsByMeans[mean]
 			fmt.Printf("    \"%s\": %d,\n", mean, count)
 		}
 		fmt.Println("  }")
