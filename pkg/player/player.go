@@ -3,6 +3,7 @@ package player
 import (
 	"fmt"
 	"regexp"
+	"strconv"
 )
 
 type Player struct {
@@ -12,14 +13,21 @@ type Player struct {
 }
 
 func ExtractPlayerID(input string) (string, error) {
-	regex := regexp.MustCompile(`ClientConnect:\s+(\d+)|ClientUserinfoChanged:\s+(\d+)`)
+	regex := regexp.MustCompile(`Client(?:Connect|UserinfoChanged):\s+(\d+)`)
 	match := regex.FindStringSubmatch(input)
 
 	if len(match) < 2 {
 		return "", fmt.Errorf("ID not found in the string")
 	}
 
-	return match[len(match)-1], nil
+	id := match[1]
+
+	// Check that the ID is a valid number
+	if _, err := strconv.Atoi(id); err != nil {
+		return "", fmt.Errorf("Invalid ID format")
+	}
+
+	return id, nil
 }
 
 func ExtractPlayerName(line string) string {

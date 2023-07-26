@@ -5,6 +5,20 @@ import (
 )
 
 func TestExtractPlayerID(t *testing.T) {
+	t.Run("ValidClientConnect", func(t *testing.T) {
+		input := "ClientConnect: 123"
+		expectedID := "123"
+
+		id, err := ExtractPlayerID(input)
+
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		if id != expectedID {
+			t.Errorf("Expected ID '%s', got: '%s'", expectedID, id)
+		}
+	})
+
 	t.Run("ValidClientUserinfoChanged", func(t *testing.T) {
 		input := "ClientUserinfoChanged: 456"
 		expectedID := "456"
