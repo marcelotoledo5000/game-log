@@ -10,35 +10,10 @@ import (
 	"strings"
 )
 
-type Game struct {
-	TotalKills   int
-	Players      []*Player
-	Kills        map[string]int
-	KillsByMeans map[string]int
-}
-
-type GameParser struct {
-	games []*Game
-}
-
 type Player struct {
 	Id    string
 	Name  string
 	Score int
-}
-
-func NewGameParser() *GameParser {
-	return &GameParser{
-		games: make([]*Game, 0),
-	}
-}
-
-func (gp *GameParser) currentGame() (*Game, error) {
-	current := gp.games[len(gp.games)-1]
-	if current != nil {
-		return current, nil
-	}
-	return nil, fmt.Errorf("No started game")
 }
 
 func (gp *GameParser) ParseLog(filePath string) error {
@@ -134,21 +109,6 @@ func (gp *GameParser) ParseLog(filePath string) error {
 	}
 
 	return nil
-}
-
-func findOrCreatePlayer(game *Game, id string) *Player {
-	for _, player := range game.Players {
-		if player.Id == id {
-			return player
-		}
-	}
-
-	player := &Player{
-		Id: id,
-	}
-	game.Players = append(game.Players, player)
-
-	return player
 }
 
 func extractPlayerID(input string) (string, error) {
@@ -250,6 +210,7 @@ func sortPlayerRanking(playerRanking map[string]int) []string {
 	}
 	return sortedRanking
 }
+	"github.com/marcelotoledo5000/game-log/pkg/game"
 
 func main() {
 	var logFilePath string
