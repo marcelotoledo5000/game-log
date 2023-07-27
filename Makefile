@@ -26,3 +26,7 @@ test_local:
 .PHONY: build_local
 build_local:
 	go build
+
+.PHONY: run
+run:
+	go run main.go $(ARGS)

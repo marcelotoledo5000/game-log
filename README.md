@@ -11,6 +11,9 @@ A simple log parser for game logs extracts player information, kills, and kill t
   - [Introduction](#introduction)
   - [System requirements](#system-requirements)
   - [How to use](#how-to-use)
+  - [Running tests](#running-tests)
+  - [Release](#release)
+    - [Dockerimage](#dockerimage)
   - [Sample log](#sample-log)
   - [Sample report](#sample-report)
 
@@ -20,40 +23,80 @@ The Game Log Parser is a tool that reads a game log file and extracts relevant i
 
 ## System requirements
 
-- Go (version 1.20.6 or higher)
+- Go (version 1.20 or higher)
 
 ## How to use
 
-1. Make sure you have Go installed on your system.
+1. Make sure you have Go installed on your system or docker.
 2. Clone the repository to your local environment:
 
-```bash
+```shell script
 git clone https://github.com/marcelotoledo5000/game-log.git
 cd game-log
 ```
 
 3. Build the project:
 
-```bash
+```shell script
 go build
+```
+
+or
+
+```shell script
+make build_local
 ```
 
 4. Run the program, providing the path of the log file as an argument:
 
-```bash
+```shell script
 go run main.go path/to/file.log
 ```
 
 For example:
 
-```bash
+```shell script
 ./game-log log/temp.log
 ```
 
 or
 
-```bash
+```shell script
+make run ARGS=log/temp.log
+```
+
+or
+
+```shell script
 go run main.go log/temp.log
+```
+
+## Running tests
+
+Run the tests inside a docker container:
+```shell script
+make test
+```
+
+Run the tests in the local:
+```shell script
+make test_local
+```
+
+## Release
+
+### Dockerimage
+
+Build the docker image:
+
+```shell script
+make package
+```
+
+Push the image to a docker registry:
+
+```shell script
+make release
 ```
 
 ## Sample log
