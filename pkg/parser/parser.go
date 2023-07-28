@@ -74,15 +74,9 @@ func (lp *LogParser) ParseLog(filePath string) error {
 			currentGame.KillsByMeans[method]++
 
 			if killer == "<world>" {
-				if _, ok := currentGame.Kills[victim]; ok {
-					currentGame.Kills[victim]--
-				} else {
-					currentGame.Kills[victim] = -1
-				}
-			} else {
-				if killer != victim {
-					currentGame.Kills[killer]++
-				}
+				currentGame.Kills[victim]--
+			} else if killer != victim {
+				currentGame.Kills[killer]++
 			}
 
 		case strings.Contains(line, "ShutdownGame"):

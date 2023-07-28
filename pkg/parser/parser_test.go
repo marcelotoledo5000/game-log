@@ -30,13 +30,16 @@ func TestParseLog(t *testing.T) {
 	}
 
 	// Check total kills
-	if lp.Games[0].TotalKills != 3 {
-		t.Errorf("Expected 0 total kills, got %d", lp.Games[0].TotalKills)
+	if lp.Games[0].TotalKills != 4 {
+		t.Errorf("Expected 4 total kills, got %d", lp.Games[0].TotalKills)
 	}
 
 	// Check specific kills
 	if lp.Games[0].Kills["Isgalamido"] != 1 {
 		t.Errorf("Expected 1 kills for player 'Isgalamido', got %d", lp.Games[0].Kills["Isgalamido"])
+	}
+	if lp.Games[0].Kills["Mocinha"] != 0 {
+		t.Errorf("Expected 0 kills for player 'Mocinha', got %d", lp.Games[0].Kills["Mocinha"])
 	}
 
 	// Check specific kills by means
@@ -45,6 +48,9 @@ func TestParseLog(t *testing.T) {
 	}
 	if lp.Games[0].KillsByMeans["MOD_ROCKET_SPLASH"] != 2 {
 		t.Errorf("Expected 2 kills by means 'MOD_ROCKET_SPLASH', got %d", lp.Games[0].KillsByMeans["MOD_ROCKET_SPLASH"])
+	}
+	if lp.Games[0].KillsByMeans["MOD_ROCKET"] != 1 {
+		t.Errorf("Expected 1 kills by means 'MOD_ROCKET', got %d", lp.Games[0].KillsByMeans["MOD_ROCKET"])
 	}
 }
 
