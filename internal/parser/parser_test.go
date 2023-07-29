@@ -3,7 +3,7 @@ package parser
 import (
 	"testing"
 
-	"github.com/marcelotoledo5000/game-log/pkg/game"
+	"github.com/marcelotoledo5000/game-log/internal/game"
 )
 
 func TestParseLog(t *testing.T) {

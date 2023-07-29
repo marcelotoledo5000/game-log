@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/marcelotoledo5000/game-log/pkg/game"
-	"github.com/marcelotoledo5000/game-log/pkg/player"
+	"github.com/marcelotoledo5000/game-log/internal/game"
+	"github.com/marcelotoledo5000/game-log/internal/player"
 )
 
 func GenerateReport(gp game.GameParserInterface) {

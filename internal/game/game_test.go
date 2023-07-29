@@ -3,7 +3,7 @@ package game
 import (
 	"testing"
 
-	"github.com/marcelotoledo5000/game-log/pkg/player"
+	"github.com/marcelotoledo5000/game-log/internal/player"
 )
 
 func TestCurrentGame(t *testing.T) {

@@ -4,9 +4,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/marcelotoledo5000/game-log/pkg/game"
-	"github.com/marcelotoledo5000/game-log/pkg/parser"
-	"github.com/marcelotoledo5000/game-log/pkg/report"
+	"github.com/marcelotoledo5000/game-log/internal/game"
+	"github.com/marcelotoledo5000/game-log/internal/parser"
+	"github.com/marcelotoledo5000/game-log/internal/report"
 )
 
 func main() {
